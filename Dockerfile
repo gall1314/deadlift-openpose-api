@@ -1,46 +1,34 @@
-# Dockerfile for OpenPose Flask API on RunPod
+# Base image
+FROM python:3.10
 
-FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu20.04
+# Prevent tzdata from waiting for user input
+ENV DEBIAN_FRONTEND=noninteractive
 
-# System dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    build-essential \
     cmake \
-    git \
-    curl \
+    build-essential \
     wget \
     unzip \
+    git \
     libopencv-dev \
-    python3-dev \
-    python3-pip \
-    python3-opencv \
-    libprotobuf-dev \
-    protobuf-compiler \
-    && rm -rf /var/lib/apt/lists/*
+    tzdata
 
-# Set Python aliases
-RUN ln -s /usr/bin/python3 /usr/bin/python && \
-    ln -s /usr/bin/pip3 /usr/bin/pip
+# Set working directory
+WORKDIR /app
+
+# Copy requirements
+COPY requirements.txt .
 
 # Install Python dependencies
-COPY requirements.txt /app/requirements.txt
-RUN pip install --upgrade pip && pip install -r /app/requirements.txt
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
 
-# Download and build OpenPose
-WORKDIR /app
-RUN git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose.git && \
-    cd openpose && \
-    git submodule update --init --recursive && \
-    mkdir build && cd build && \
-    cmake .. -DBUILD_PYTHON=OFF -DBUILD_EXAMPLES=OFF -DUSE_CUDNN=ON && \
-    make -j"$(nproc)"
+# Copy the rest of the code
+COPY . .
 
-# Copy application code
-COPY app.py /app/app.py
-RUN mkdir /app/media
-
-# Expose API port
+# Expose port if needed (for Flask)
 EXPOSE 5000
 
-# Start app
-CMD ["python", "/app/app.py"]
+# Run the API
+CMD ["python", "app.py"]
