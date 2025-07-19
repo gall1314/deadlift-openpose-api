@@ -30,5 +30,5 @@ COPY . .
 # Expose port if needed (for Flask)
 EXPOSE 5000
 
-# Run the API
-CMD ["python", "app.py"]
+# Run the handler script (RunPod expects this if using entrypoint "handler.py")
+CMD ["python", "handler.py"]
