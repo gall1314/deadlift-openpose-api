@@ -9,9 +9,11 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-# פתרון קריטי: התקנת numpy ו-cython מראש כדי למנוע שגיאות קומפילציה
 RUN pip install --upgrade pip &&     pip install numpy cython &&     pip install -r requirements.txt
 
 COPY . .
 
-CMD ["python3", "/app/handler.py"]
+# בדיקת נוכחות handler.py לפני הרצה
+RUN ls -l /app
+
+CMD ["python3", "-u", "handler.py"]
