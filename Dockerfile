@@ -4,7 +4,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 ENV PIP_NO_BUILD_ISOLATION=1
 
-# התקנת Python וכל התלויות בעצמך
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
@@ -17,7 +16,6 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libsm6 \
     libxext6 \
-    libgl1 \
     libgl1-mesa-glx \
     libglib2.0-0 \
     tzdata
@@ -32,4 +30,4 @@ RUN pip3 install --upgrade pip && \
 
 COPY . .
 
-CMD python3 handler.py
+CMD ["python3", "handler.py"]
