@@ -3,7 +3,7 @@ FROM python:3.10
 # להימנע משאלות התקנה
 ENV DEBIAN_FRONTEND=noninteractive
 
-# התקנת כל התלויות הדרושות כולל git
+# התקנת כל התלויות הדרושות, כולל git (חשוב!)
 RUN apt-get update && apt-get install -y \
     git \
     cmake \
@@ -17,21 +17,24 @@ RUN apt-get update && apt-get install -y \
     libopencv-dev \
     tzdata
 
-# משתנים שמאפשרים לבנות openpifpaf מהמקור
+# מאפשר התקנה מהמקור בלי בידוד
 ENV PIP_NO_BUILD_ISOLATION=1
 
-# תיקיית העבודה
+# מאלץ בנייה מחדש – כדי לשבור קאש
+ENV FORCE_REBUILD=1
+
+# תיקיית עבודה
 WORKDIR /app
 
-# העתקת דרישות ההתקנה
+# העתקת קובץ הדרישות
 COPY requirements.txt .
 
 # התקנת pip ותלויות
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
-# העתקת שאר הקוד
+# העתקת הקוד שלך
 COPY . .
 
-# הרצת הקובץ הראשי
+# הפעלת ההנדלר
 CMD ["python", "handler.py"]
