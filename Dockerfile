@@ -1,24 +1,26 @@
-FROM ubuntu:22.04
+FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 ENV PIP_NO_BUILD_ISOLATION=1
 
+# התקנת Python וכל התלויות
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     python3-dev \
-    git \
     ffmpeg \
-    wget \
-    unzip \
-    cmake \
-    build-essential \
+    libglib2.0-0 \
     libsm6 \
     libxext6 \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    tzdata
+    wget \
+    unzip \
+    git \
+    cmake \
+    build-essential \
+    tzdata && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -31,3 +33,4 @@ RUN pip3 install --upgrade pip && \
 COPY . .
 
 CMD ["python3", "handler.py"]
+
