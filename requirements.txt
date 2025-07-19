@@ -5,9 +5,9 @@ requests==2.31.0
 torch==1.13.1
 torchvision==0.14.1
 torchaudio==0.13.1
-openpifpaf==0.13.7
 pillow==9.5.0
 matplotlib==3.7.1
 scipy==1.10.1
 tqdm==4.65.0
 pycocotools==2.0.6
+git+https://github.com/openpifpaf/openpifpaf.git@v0.13.7
