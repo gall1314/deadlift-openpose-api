@@ -14,20 +14,17 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libgl1-mesa-glx \
     libopencv-dev \
-    python3-dev \
+    python3-dev \  # ✅ זה הפתרון הקריטי
     tzdata
 
 WORKDIR /app
 
 COPY requirements.txt .
 
+# התקנה מדורגת כדי למנוע בעיות קומפילציה עם numpy ו־cython
 RUN pip install --upgrade pip && \
     pip install numpy cython && \
     pip install -r requirements.txt
-
-# 👇 שלב קריטי: הורדה ידנית של openpifpaf
-RUN git clone --branch v0.13.7 https://github.com/openpifpaf/openpifpaf.git && \
-    pip install ./openpifpaf
 
 COPY . .
 
