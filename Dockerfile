@@ -14,4 +14,4 @@ RUN pip install --upgrade pip &&     pip install numpy cython &&     pip install
 
 COPY . .
 
-CMD ["python", "handler.py"]
+CMD ["python3", "/app/handler.py"]
