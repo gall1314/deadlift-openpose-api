@@ -20,6 +20,8 @@ WORKDIR /app
 
 COPY requirements.txt .
 
+RUN which git && git --version  # בדיקה ש-git באמת קיים
+
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
