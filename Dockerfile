@@ -1,10 +1,9 @@
 FROM python:3.10
 
-# לא לשאול שאלות התקנה
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PIP_NO_BUILD_ISOLATION=1
 
-# מתקין git לפני הרצת requirements.txt
+# התקנת git וכל שאר התלויות לפני הרצת pip
 RUN apt-get update && apt-get install -y \
     git \
     cmake \
@@ -18,15 +17,15 @@ RUN apt-get update && apt-get install -y \
     libopencv-dev \
     tzdata
 
-# בדיקה שה-git מותקן
-RUN git --version
-
 WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+# לוודא שה-git באמת מותקן כאן
+RUN git --version
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
 COPY . .
 
