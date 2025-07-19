@@ -2,7 +2,3 @@ flask
 numpy
 opencv-python
 requests
-torch
-torchvision
-torchaudio
-openpifpaf
