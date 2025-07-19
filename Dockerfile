@@ -16,4 +16,5 @@ COPY . .
 # בדיקת נוכחות handler.py לפני הרצה
 RUN ls -l /app
 
-CMD ["python3", "-u", "handler.py"]
+CMD ["python3", "-u", "/app/handler.py"]
+
