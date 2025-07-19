@@ -14,14 +14,13 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libgl1-mesa-glx \
     libopencv-dev \
-    python3-dev \  # ✅ זה הפתרון הקריטי
+    python3-dev \
     tzdata
 
 WORKDIR /app
 
 COPY requirements.txt .
 
-# התקנה מדורגת כדי למנוע בעיות קומפילציה עם numpy ו־cython
 RUN pip install --upgrade pip && \
     pip install numpy cython && \
     pip install -r requirements.txt
