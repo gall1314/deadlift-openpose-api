@@ -1,4 +1,3 @@
-
 import requests
 import cv2
 import tempfile
