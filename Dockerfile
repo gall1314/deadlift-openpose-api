@@ -2,7 +2,7 @@ FROM python:3.10
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# שלב קריטי – התקנת git וכל התלויות לפני התקנת הדרישות
+# התקנת git (נדרש עבור openpifpaf מה-GitHub)
 RUN apt-get update && apt-get install -y \
     git \
     cmake \
@@ -16,17 +16,17 @@ RUN apt-get update && apt-get install -y \
     libopencv-dev \
     tzdata
 
+# מונע בעיות בידוד בעת בנייה של חבילות כמו openpifpaf
 ENV PIP_NO_BUILD_ISOLATION=1
 
 WORKDIR /app
 
-# העתקת קובץ הדרישות והתקנה
 COPY requirements.txt .
 
+# התקנת pip והדרישות
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
-# העתקת שאר הקוד
 COPY . .
 
 CMD ["python", "handler.py"]
