@@ -2,10 +2,8 @@ FROM python:3.10
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# אפשר התקנת בינאריות בלבד, חוץ מ־openpifpaf
+# לאפשר גם בנייה של openpifpaf
 ENV PIP_NO_BUILD_ISOLATION=1
-ENV PIP_ONLY_BINARY=:all:
-ENV PIP_NO_BINARY=openpifpaf
 
 RUN apt-get update && apt-get install -y \
     cmake \
