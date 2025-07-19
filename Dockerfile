@@ -4,7 +4,7 @@ FROM python:3.10
 # Avoid tzdata hanging
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install system packages
+# Install system packages required for video and deep learning
 RUN apt-get update && apt-get install -y \
     cmake \
     build-essential \
@@ -24,18 +24,16 @@ WORKDIR /app
 # Copy dependencies
 COPY requirements.txt .
 
-# Install Python + ML packages
+# Install Python dependencies (split for reliability)
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt && \
-    pip install \
-        requests \
-        flask \
-        torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu && \
-    pip install openpifpaf
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
-# Copy project files
+# Install OpenPifPaf separately to prevent breaking chain
+RUN pip install openpifpaf
+
+# Copy the rest of the code
 COPY . .
 
-# Run handler script
+# Run handler
 CMD ["python", "handler.py"]
-
