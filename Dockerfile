@@ -1,10 +1,7 @@
-# Base image
 FROM python:3.10
 
-# Avoid tzdata hanging
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install system packages required for video and deep learning
 RUN apt-get update && apt-get install -y \
     cmake \
     build-essential \
@@ -18,22 +15,13 @@ RUN apt-get update && apt-get install -y \
     libopencv-dev \
     tzdata
 
-# Set working directory
 WORKDIR /app
 
-# Copy dependencies
 COPY requirements.txt .
 
-# Install Python dependencies (split for reliability)
 RUN pip install --upgrade pip && \
-    pip install -r requirements.txt && \
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+    pip install -r requirements.txt
 
-# Install OpenPifPaf separately to prevent breaking chain
-RUN pip install openpifpaf
-
-# Copy the rest of the code
 COPY . .
 
-# Run handler
 CMD ["python", "handler.py"]
