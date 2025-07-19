@@ -1,39 +1,35 @@
-FROM python:3.10
+FROM ubuntu:22.04
 
-# למנוע אינטראקציה בהתקנת חבילות
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
 ENV PIP_NO_BUILD_ISOLATION=1
 
+# התקנת Python וכל התלויות בעצמך
 RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-dev \
     git \
-    cmake \
-    build-essential \
+    ffmpeg \
     wget \
     unzip \
-    ffmpeg \
+    cmake \
+    build-essential \
     libsm6 \
     libxext6 \
     libgl1 \
     libgl1-mesa-glx \
     libglib2.0-0 \
-    libopencv-dev \
-    python3-dev \
     tzdata
 
-
-# תיקיית עבודה
 WORKDIR /app
 
-# העתקת הדרישות
 COPY requirements.txt .
 
-# התקנת pip וחבילות חשובות קודם (numpy, cython)
-RUN pip install --upgrade pip && \
-    pip install numpy cython && \
-    pip install -r requirements.txt
+RUN pip3 install --upgrade pip && \
+    pip3 install numpy cython && \
+    pip3 install -r requirements.txt
 
-# העתקת שאר הקבצים (כולל handler.py)
 COPY . .
 
-# נריץ את הקובץ דרך python (לא ישירות) כדי לעקוף בעיות BOM והרשאות
 CMD python3 handler.py
