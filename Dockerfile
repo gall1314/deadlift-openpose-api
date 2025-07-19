@@ -4,7 +4,6 @@ FROM python:3.10
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PIP_NO_BUILD_ISOLATION=1
 
-# התקנת כל הספריות הנדרשות כולל libgl1
 RUN apt-get update && apt-get install -y \
     git \
     cmake \
@@ -16,9 +15,11 @@ RUN apt-get update && apt-get install -y \
     libxext6 \
     libgl1 \
     libgl1-mesa-glx \
+    libglib2.0-0 \
     libopencv-dev \
     python3-dev \
     tzdata
+
 
 # תיקיית עבודה
 WORKDIR /app
