@@ -1,0 +1,9 @@
+{
+  "input": {
+    "video_url": {
+      "type": "string",
+      "description": "URL of the video to analyze",
+      "default": "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+    }
+  }
+}
