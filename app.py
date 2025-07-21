@@ -1,24 +1,26 @@
+
 from flask import Flask, request, jsonify
-from analysis.deadlift import analyze_deadlift
+from deadlift import analyze_deadlift
+import os
+import uuid
 
 app = Flask(__name__)
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
-    video_file = request.files.get("video")
-    exercise = request.form.get("exercise", "deadlift")
-
-    if not video_file:
+    video = request.files.get("video")
+    if not video:
         return jsonify({"error": "No video uploaded"}), 400
 
-    # נשמור זמנית את הווידאו
-    filepath = f"/tmp/{video_file.filename}"
-    video_file.save(filepath)
+    # שמירת קובץ זמנית
+    filename = f"/tmp/{uuid.uuid4()}.mp4"
+    video.save(filename)
 
-    if exercise == "deadlift":
-        result = analyze_deadlift(filepath)
-    else:
-        return jsonify({"error": f"Unsupported exercise: {exercise}"}), 400
+    try:
+        result = analyze_deadlift(filename)
+    finally:
+        if os.path.exists(filename):
+            os.remove(filename)
 
     return jsonify(result)
 
