@@ -7,5 +7,4 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY . .
 
-CMD ["python", "handler.py"]
-
+CMD ["python", "app.py"]
